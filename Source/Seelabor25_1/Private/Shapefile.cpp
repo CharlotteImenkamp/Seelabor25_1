@@ -348,7 +348,7 @@ TArray<FVector2D> Shapefile::GetImageCoordinates(float sizeX, float sizeY)
 	for (size_t i = 0; i < coordinates.size(); i++)
 	{
 		x = (xCoordinates[i] - minmaxX.first) / (minmaxX.second -minmaxX.first) * sizeX;
-		y = - (yCoordinates[i] - minmaxY.first) / (minmaxY.second - minmaxY.first) * sizeY;
+		y = (yCoordinates[i] - minmaxY.first) / (minmaxY.second - minmaxY.first) * sizeY;
 		imageCoordinates.Emplace(FVector2D(x, y));
 	}
 
