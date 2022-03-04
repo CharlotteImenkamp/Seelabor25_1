@@ -1,0 +1,9 @@
+{
+    "defines": [],
+    "system_libs": [],
+    "unreal_modules": [
+        "libcurl",
+        "UElibPNG",
+        "zlib"
+    ]
+}
