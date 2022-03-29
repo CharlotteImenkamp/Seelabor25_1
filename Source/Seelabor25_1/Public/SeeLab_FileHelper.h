@@ -20,11 +20,16 @@ public:
 	// Load
 	//-------------------------------
 
-	UFUNCTION(BlueprintCallable)
-		static TArray<FVector> LoadTxtToPoints(const FString path); 
+	ASeeLab_FileHelper(FString path, float minX, float maxX, float minY, float maxY, float cloudSizeX, float cloudSizeY);
 
-	UFUNCTION(BlueprintCallable)
-		 UCloudData* LoadTxtToCloudData( FString path); 
+	FVector GetCoordinates(FString path);
+
+	bool getFileContent(FString fileName, std::vector<std::string>& vecOfStrs);
+	
+	FVector2D GetImageCoordinates();
+	FString GetType();
+	static TArray<FVector> LoadTxtToPoints(const FString path);
+
 
 	//-------------------------------
 	// Save
@@ -43,8 +48,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 		 void SaveXyzRgb_arr(FString path, TArray<FVector> points, TArray<FColor> color);
 
+	UFUNCTION(BlueprintCallable)
+		int GetNPointsInSphere(TArray<FVector2D> locations, FVector2D center, float range); 
+
 protected:
 	virtual void BeginPlay() override;
+
+private: 
+
 
 
 

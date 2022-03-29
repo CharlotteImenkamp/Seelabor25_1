@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "LidarPointCloud.h"
 
 #pragma once
+#include "LidarPointCloud.h"
+
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"

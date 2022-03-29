@@ -1,8 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "Shapefile.h"
-
+#include "GISDataFile.h"
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "CloudData.generated.h"
@@ -18,8 +17,12 @@ public:
 	UCloudData();
 	~UCloudData();
 
+
 	UFUNCTION(BlueprintCallable)
-		void Initialize(FString path, FString name, FColor color);
+		void InitializeShapefile(FString path, FString name, FColor color);
+
+	UFUNCTION(BlueprintCallable)
+		void InitializeXYZFile(FString path, FString name, FColor color); 
 
 	UFUNCTION(BlueprintCallable)
 		void ExportPoints();
@@ -27,11 +30,37 @@ public:
 	UFUNCTION(BlueprintCallable)
 		TArray<FVector> GetReducedPointSet(); 
 
+	UFUNCTION(BlueprintCallable)
+		FVector GetWorldCoordinate(float x, float y); 
 
+	UFUNCTION(BlueprintCallable)
+		FVector GetEPSGCoordinate(float x, float y); 
+
+	UFUNCTION(BlueprintCallable)
+		TArray<FString> GetAttribute(FString AttributeName); 
+
+private: 
+	float minX;
+	float maxX;
+	float minY;
+	float maxY;
 
 public:	
 	UPROPERTY(BlueprintReadWrite)
-		TArray<FString> Attributes; 
+		float CloudSizeX; 
+
+	UPROPERTY(BlueprintReadWrite)
+		float CloudSizeY;
+
+	UPROPERTY(BlueprintReadWrite)
+		bool depthAvailable; 
+
+	UPROPERTY(BlueprintReadWrite)
+		UGISDataFile* fileRef; 
+
+	UPROPERTY(BlueprintReadWrite)
+		TArray<float> depth; 
+
 
 	UPROPERTY(BlueprintReadWrite)
 		TArray<FVector2D> Locations2D;
@@ -43,10 +72,9 @@ public:
 		FString Name;
 
 	UPROPERTY(BlueprintReadWrite)
-		FColor Color;
+		FColor Color; 
 
-	UPROPERTY(BlueprintReadWrite)
-		float Size;
+
 		
 };
 

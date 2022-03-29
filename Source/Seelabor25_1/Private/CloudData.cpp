@@ -1,32 +1,51 @@
 
-
 #include "CloudData.h"
 
-#include "Shapefile.h"
+#include "SeeLab_FileHelper.h"
+#include "GISShapefile.h"
+#include "GISXyzFile.h"
 
-// Sets default values for this component's properties
 UCloudData::UCloudData()
 {
 	Locations2D = {};
-	Attributes = {}; 
 	Type = "";
 	Name = "";
-	Color = FColor::White;
-	Size = 1.0f;
+	depthAvailable = false; 
+	depth = {}; 
+
+	minX = 9.71324f;
+	maxX = 10.23494f;
+	maxY = 54.39195f;
+	minY = 54.57100f;
+
+	CloudSizeX = 1920.0f;
+	CloudSizeY = 1920.0f;
 }
 
 UCloudData::~UCloudData() {
 	Locations2D.Empty();
 }
 
-void UCloudData::Initialize(FString path, FString name, FColor color)
+void UCloudData::InitializeShapefile(FString path, FString name, FColor color)
 {
-	Shapefile shp(path);
-	Locations2D = shp.GetImageCoordinates(1920.0f, 1080.0f);
-	// funktioniert nicht ** Attributes = shp.GetAttributes(); 
-	Type = shp.GetType().c_str();
+	UGISShapefile* shp = NewObject<UGISShapefile>(); 
+	fileRef = (UGISShapefile*)shp;
+	shp->Initialize(path, minX, maxX, minY, maxY, CloudSizeX, CloudSizeY);
+	Locations2D = shp->GetImageCoordinates();
 	Color = color;
 	Name = name;
+	depthAvailable = false; 
+}
+
+void UCloudData::InitializeXYZFile(FString path, FString name, FColor color) {
+	UGISXyzFile* xyz = NewObject<UGISXyzFile>(); 
+	fileRef = (UGISDataFile*)xyz; 
+	xyz->Initialize(path, minX, maxX, minY, maxY, CloudSizeX, CloudSizeY); 
+	Locations2D = xyz->GetImageCoordinates(); 
+	Type = xyz->GetType(); 
+	Name = name; 
+	depthAvailable = true; 
+	depth = xyz->GetDepth(); 
 }
 
 void UCloudData::ExportPoints() {
@@ -46,7 +65,7 @@ void UCloudData::ExportPoints() {
 TArray<FVector> UCloudData::GetReducedPointSet()
 {
 	TArray<FVector2D> temp; 
-	int max = 20; 
+	int max = 1000; 
 
 	if (Locations2D.Num() > max) {
 		for (int i = 0; i < Locations2D.Num(); i=i+(Locations2D.Num()/max))
@@ -68,6 +87,22 @@ TArray<FVector> UCloudData::GetReducedPointSet()
 
 	return res; 
 }
+
+FVector UCloudData::GetWorldCoordinate(float x, float y)
+{
+	return UGISDataFile::GetWorldCoordinate(x,y, CloudSizeX, CloudSizeY, minX, maxX, minY, maxY);
+}
+
+FVector UCloudData::GetEPSGCoordinate(float x, float y) {
+	return UGISDataFile::GetEPSG(x, y, CloudSizeX, CloudSizeY, minX, maxX, minY, maxY);
+}
+
+TArray<FString> UCloudData::GetAttribute(FString AttributeName)
+{
+	return fileRef->GetAttributes(AttributeName);
+}
+
+
 
 
 

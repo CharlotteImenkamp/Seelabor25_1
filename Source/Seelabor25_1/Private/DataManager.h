@@ -3,7 +3,6 @@
 #pragma once
 #include "LidarPointCloud.h"
 #include "LidarPointCloudComponent.h"
-#include "Shapefile.h"
 #include "CloudData.h"
 
 #include "CoreMinimal.h"
@@ -45,7 +44,8 @@ protected:
 		FColor Color; 
 	};
 
-	TArray<DataInit> Initialization;
+	TArray<DataInit> InitShapefile;
+	TArray<DataInit> InitXYZFile; 
 	
 public:	
 	// Called every frame

@@ -9,7 +9,7 @@ public class Seelabor25_1 : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
-
+		PublicDependencyModuleNames.AddRange(new string[] { "ProceduralMeshComponent" });
 		PublicDependencyModuleNames.AddRange(new string[] { "LidarPointCloudRuntime" });
 
 		PublicDependencyModuleNames.AddRange( new string[] {"GDAL","UnrealGDAL" });

@@ -1,6 +1,5 @@
 #include "PointCloudActor.h"
 
-#include "Shapefile.h"
 #include "LidarPointCloud.h"
 #include "LidarPointCloudComponent.h"
 //#include "LidarPointCloudActor.h"
